@@ -1,0 +1,1656 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ITパスポート デイリー問題集</title>
+  <style>
+    :root {
+      --bg: #f4f6fb;
+      --surface: #ffffff;
+      --surface-soft: #f8fafc;
+      --border: #e2e8f0;
+      --text: #0f172a;
+      --muted: #64748b;
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --primary-soft: #eff6ff;
+      --success: #16a34a;
+      --success-soft: #f0fdf4;
+      --danger: #dc2626;
+      --danger-soft: #fef2f2;
+      --warning: #d97706;
+      --warning-soft: #fffbeb;
+      --str: #0284c7;
+      --mgt: #7c3aed;
+      --tec: #059669;
+      --radius: 14px;
+      --shadow: 0 4px 16px rgba(15, 23, 42, 0.06);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+      min-height: 100vh;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+    }
+    .header-inner {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 12px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      font-size: 1.08rem;
+      letter-spacing: -0.01em;
+    }
+    .brand-badge {
+      background: var(--primary);
+      color: #fff;
+      font-size: 0.72rem;
+      padding: 3px 8px;
+      border-radius: 999px;
+      font-weight: 700;
+    }
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .sync-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 5px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--surface-soft);
+      color: var(--muted);
+    }
+    .sync-pill.connected { background: var(--success-soft); color: var(--success); border-color: #bbf7d0; }
+    .sync-pill.syncing { background: var(--primary-soft); color: var(--primary); border-color: #bfdbfe; }
+    .sync-pill.error { background: var(--danger-soft); color: var(--danger); border-color: #fecaca; }
+    .dot { width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+
+    .container {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 20px 18px 60px;
+    }
+
+    nav.tabs {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 20px;
+      background: var(--surface);
+      padding: 6px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      overflow-x: auto;
+    }
+    nav.tabs button {
+      flex: 1;
+      min-width: 110px;
+      border: none;
+      background: transparent;
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.88rem;
+      color: var(--muted);
+      cursor: pointer;
+      transition: 0.15s;
+      white-space: nowrap;
+    }
+    nav.tabs button:hover { background: var(--surface-soft); color: var(--text); }
+    nav.tabs button.active { background: var(--primary); color: #fff; }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      box-shadow: var(--shadow);
+      margin-bottom: 18px;
+    }
+    .card-title {
+      font-size: 1rem;
+      font-weight: 800;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(175px, 1fr));
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+    .kpi {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      box-shadow: var(--shadow);
+    }
+    .kpi-label { font-size: 0.78rem; color: var(--muted); font-weight: 700; }
+    .kpi-value { font-size: 1.7rem; font-weight: 800; margin-top: 4px; line-height: 1.2; }
+    .kpi-sub { font-size: 0.78rem; color: var(--muted); margin-top: 4px; }
+
+    .progress-track {
+      height: 10px;
+      background: #e2e8f0;
+      border-radius: 999px;
+      overflow: hidden;
+      margin-top: 8px;
+    }
+    .progress-fill {
+      height: 100%;
+      background: var(--primary);
+      border-radius: 999px;
+      transition: width 0.3s ease;
+    }
+
+    .field-bars { display: grid; gap: 14px; }
+    .field-row-head {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.88rem;
+      font-weight: 700;
+      margin-bottom: 5px;
+    }
+
+    .mode-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 12px;
+    }
+    .mode-btn {
+      text-align: left;
+      background: var(--surface-soft);
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      cursor: pointer;
+      transition: all 0.15s;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .mode-btn:hover {
+      border-color: var(--primary);
+      background: var(--primary-soft);
+      transform: translateY(-1px);
+    }
+    .mode-btn.primary-mode {
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      border-color: transparent;
+      color: #fff;
+    }
+    .mode-btn.primary-mode .mode-desc { color: rgba(255, 255, 255, 0.86); }
+    .mode-title { font-weight: 800; font-size: 0.96rem; }
+    .mode-desc { font-size: 0.8rem; color: var(--muted); }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      padding: 8px 14px;
+      border-radius: 9px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: 0.15s;
+    }
+    .btn:hover { background: var(--surface-soft); }
+    .btn-primary { background: var(--primary); color: #fff; border-color: var(--primary); }
+    .btn-primary:hover { background: var(--primary-hover); }
+    .btn-sm { padding: 5px 10px; font-size: 0.78rem; }
+    .btn-danger { color: var(--danger); border-color: #fecaca; background: var(--danger-soft); }
+
+    /* Quiz screen */
+    .quiz-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .badges { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+    .badge {
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 3px 9px;
+      border-radius: 999px;
+      background: var(--surface-soft);
+      border: 1px solid var(--border);
+      color: var(--muted);
+    }
+    .badge.str { background: #e0f2fe; color: var(--str); border-color: #bae6fd; }
+    .badge.mgt { background: #f3e8ff; color: var(--mgt); border-color: #e9d5ff; }
+    .badge.tec { background: #d1fae5; color: var(--tec); border-color: #a7f3d0; }
+    .badge.weak { background: var(--danger-soft); color: var(--danger); border-color: #fecaca; }
+
+    .bookmark-btn {
+      border: 1px solid var(--border);
+      background: var(--surface);
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      cursor: pointer;
+      color: var(--muted);
+    }
+    .bookmark-btn.active {
+      background: var(--warning-soft);
+      color: var(--warning);
+      border-color: #fde68a;
+    }
+
+    .question-text {
+      font-size: 1.06rem;
+      font-weight: 700;
+      margin: 14px 0 18px;
+      line-height: 1.75;
+    }
+    .choices { display: grid; gap: 10px; }
+    .choice-btn {
+      width: 100%;
+      text-align: left;
+      padding: 14px 16px;
+      border-radius: 11px;
+      border: 1.5px solid var(--border);
+      background: var(--surface);
+      cursor: pointer;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      font-size: 0.94rem;
+      line-height: 1.55;
+      color: var(--text);
+      transition: 0.12s;
+    }
+    .choice-btn:hover:not(:disabled) { border-color: var(--primary); background: var(--primary-soft); }
+    .choice-btn:disabled { cursor: default; }
+    .choice-key {
+      flex-shrink: 0;
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      background: var(--surface-soft);
+      border: 1px solid var(--border);
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      font-size: 0.84rem;
+    }
+    .choice-btn.correct { border-color: var(--success); background: var(--success-soft); }
+    .choice-btn.correct .choice-key { background: var(--success); color: #fff; border-color: var(--success); }
+    .choice-btn.wrong { border-color: var(--danger); background: var(--danger-soft); }
+    .choice-btn.wrong .choice-key { background: var(--danger); color: #fff; border-color: var(--danger); }
+
+    .feedback-box {
+      margin-top: 18px;
+      padding: 16px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: var(--surface-soft);
+    }
+    .feedback-box.ok { border-color: #86efac; background: var(--success-soft); }
+    .feedback-box.ng { border-color: #fca5a5; background: var(--danger-soft); }
+    .feedback-head { font-weight: 800; font-size: 1rem; margin-bottom: 6px; }
+    .feedback-exp { font-size: 0.9rem; color: var(--text); }
+
+    .quiz-footer {
+      margin-top: 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    /* Tables & Lists */
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.86rem; }
+    th, td { padding: 10px 10px; border-bottom: 1px solid var(--border); text-align: left; }
+    th { font-size: 0.78rem; color: var(--muted); font-weight: 800; background: var(--surface-soft); }
+    .empty-state { text-align: center; padding: 32px 16px; color: var(--muted); font-size: 0.9rem; }
+
+    .filter-bar { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
+    .chip {
+      padding: 6px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+      color: var(--muted);
+    }
+    .chip.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+
+    /* Modal */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.5);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      z-index: 100;
+    }
+    .modal-backdrop.open { display: flex; }
+    .modal {
+      background: var(--surface);
+      border-radius: 16px;
+      width: 100%;
+      max-width: 560px;
+      padding: 22px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    .form-group { margin-bottom: 14px; }
+    .form-group label { display: block; font-size: 0.82rem; font-weight: 700; margin-bottom: 5px; }
+    .form-group input {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      font-size: 0.9rem;
+    }
+    .section-divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 18px 0;
+    }
+    .hint { font-size: 0.78rem; color: var(--muted); margin-top: 4px; }
+    .notice-bar {
+      background: var(--primary-soft);
+      border: 1px solid #bfdbfe;
+      color: #1e40af;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-size: 0.82rem;
+      margin-bottom: 16px;
+    }
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #0f172a;
+      color: #fff;
+      padding: 10px 16px;
+      border-radius: 10px;
+      font-size: 0.84rem;
+      font-weight: 600;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(8px);
+      transition: 0.2s;
+      z-index: 200;
+    }
+    .toast.show { opacity: 1; transform: translateY(0); }
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <div class="brand">
+        <span>ITパスポート デイリー問題集</span>
+        <span class="brand-badge">全30問</span>
+      </div>
+      <div class="header-actions">
+        <span id="syncPill" class="sync-pill">
+          <span class="dot"></span>
+          <span id="syncText">ブラウザ保存</span>
+        </span>
+        <button class="btn btn-sm" id="btnOpenSettings">⚙️ 設定・バックアップ</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <nav class="tabs">
+      <button class="active" data-view="home">🏠 ホーム</button>
+      <button data-view="quiz">📝 演習</button>
+      <button data-view="weak">🔥 苦手 (<span id="tabWeakCount">0</span>)</button>
+      <button data-view="bookmarks">★ ブックマーク (<span id="tabBmCount">0</span>)</button>
+      <button data-view="history">📊 解答履歴</button>
+    </nav>
+
+    <!-- HOME VIEW -->
+    <section id="view-home">
+      <div id="storageWarn" class="notice-bar hidden">
+        ブラウザの設定により自動保存が制限されています。学習記録を残す場合は「⚙️ 設定・バックアップ」からJSONファイルへ書き出して保存してください。
+      </div>
+
+      <div class="kpi-grid">
+        <div class="kpi">
+          <div class="kpi-label">今日の演習数</div>
+          <div class="kpi-value"><span id="kpiTodayCount">0</span> <span style="font-size:0.9rem;color:var(--muted);">/ <span id="kpiGoal">10</span>問</span></div>
+          <div class="progress-track"><div id="todayProgressFill" class="progress-fill" style="width:0%"></div></div>
+          <div class="kpi-sub" id="kpiTodayRate">今日の正答率: 0%</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">累計演習数</div>
+          <div class="kpi-value" id="kpiTotalCount">0</div>
+          <div class="kpi-sub" id="kpiTotalRate">累計正答率: 0%</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">苦手問題</div>
+          <div class="kpi-value" style="color:var(--danger);" id="kpiWeakCount">0</div>
+          <div class="kpi-sub">正答率60%未満 / 直近不正解</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">ブックマーク</div>
+          <div class="kpi-value" style="color:var(--warning);" id="kpiBmCount">0</div>
+          <div class="kpi-sub">後で見直す重要問題</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">演習をスタート</div>
+        <div class="mode-grid">
+          <button class="mode-btn primary-mode" onclick="startQuiz('daily')">
+            <span class="mode-title">🚀 今日のデイリー演習（10問）</span>
+            <span class="mode-desc">未演習・苦手問題を優先して自動出題</span>
+          </button>
+          <button class="mode-btn" onclick="startQuiz('weak')">
+            <span class="mode-title">🔥 苦手問題リベンジ</span>
+            <span class="mode-desc">苦手な問題だけを集中トレーニング</span>
+          </button>
+          <button class="mode-btn" onclick="startQuiz('bookmarks')">
+            <span class="mode-title">★ ブックマーク復習</span>
+            <span class="mode-desc">保存した重要問題を確認</span>
+          </button>
+          <button class="mode-btn" onclick="startQuiz('ストラテジ系')">
+            <span class="mode-title">📘 ストラテジ系（10問）</span>
+            <span class="mode-desc">企業活動・経営戦略・法務</span>
+          </button>
+          <button class="mode-btn" onclick="startQuiz('マネジメント系')">
+            <span class="mode-title">📗 マネジメント系（10問）</span>
+            <span class="mode-desc">開発技術・PM・サービス管理・監査</span>
+          </button>
+          <button class="mode-btn" onclick="startQuiz('テクノロジ系')">
+            <span class="mode-title">📙 テクノロジ系（10問）</span>
+            <span class="mode-desc">セキュリティ・NW・DB・AI・基礎理論</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">分野別正答率</div>
+        <div class="field-bars" id="fieldBars"></div>
+      </div>
+    </section>
+
+    <!-- QUIZ VIEW -->
+    <section id="view-quiz" class="hidden">
+      <div class="card" id="quizActiveCard">
+        <div class="quiz-meta">
+          <div class="badges">
+            <span class="badge" id="qProgress">1 / 10</span>
+            <span class="badge" id="qIdBadge">STR-01</span>
+            <span class="badge" id="qFieldBadge">ストラテジ系</span>
+            <span class="badge" id="qCatBadge">企業活動</span>
+            <span class="badge weak hidden" id="qWeakBadge">苦手</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span class="badge" id="qTimer">⏱ 0秒</span>
+            <button class="bookmark-btn" id="btnToggleBookmark" onclick="toggleCurrentBookmark()">☆ ブックマーク</button>
+          </div>
+        </div>
+
+        <div class="progress-track" style="margin-bottom:14px;">
+          <div id="quizProgressFill" class="progress-fill" style="width:0%"></div>
+        </div>
+
+        <div class="question-text" id="qText"></div>
+        <div class="choices" id="qChoices"></div>
+
+        <div class="feedback-box hidden" id="qFeedback">
+          <div class="feedback-head" id="qFeedbackHead"></div>
+          <div class="feedback-exp" id="qFeedbackExp"></div>
+        </div>
+
+        <div class="quiz-footer">
+          <button class="btn btn-sm" onclick="switchView('home')">← ホームへ戻る</button>
+          <div style="display:flex;gap:8px;align-items:center;">
+            <span class="hint" style="margin:0;">ショートカット: 1〜4で解答 / Enterで次へ</span>
+            <button class="btn btn-primary hidden" id="btnNextQuestion" onclick="nextQuestion()">次の問題へ →</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card hidden" id="quizResultCard">
+        <div class="card-title">🎉 演習完了！</div>
+        <div class="kpi-grid" style="margin-top:10px;">
+          <div class="kpi">
+            <div class="kpi-label">今回のスコア</div>
+            <div class="kpi-value" id="resScore">0 / 0</div>
+          </div>
+          <div class="kpi">
+            <div class="kpi-label">正答率</div>
+            <div class="kpi-value" id="resRate">0%</div>
+          </div>
+          <div class="kpi">
+            <div class="kpi-label">平均解答時間</div>
+            <div class="kpi-value" id="resAvgSec">0秒</div>
+          </div>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px;">
+          <button class="btn btn-primary" onclick="startQuiz('daily')">もう一度デイリー演習</button>
+          <button class="btn" onclick="startQuiz('weak')">苦手問題だけ解き直す</button>
+          <button class="btn" onclick="switchView('home')">ホームへ戻る</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- WEAK VIEW -->
+    <section id="view-weak" class="hidden">
+      <div class="card">
+        <div class="card-title">
+          <span>🔥 苦手問題一覧</span>
+          <button class="btn btn-primary btn-sm" onclick="startQuiz('weak')">苦手問題をまとめて演習</button>
+        </div>
+        <div id="weakListWrap"></div>
+      </div>
+    </section>
+
+    <!-- BOOKMARKS VIEW -->
+    <section id="view-bookmarks" class="hidden">
+      <div class="card">
+        <div class="card-title">
+          <span>★ ブックマーク一覧</span>
+          <button class="btn btn-primary btn-sm" onclick="startQuiz('bookmarks')">ブックマークをまとめて演習</button>
+        </div>
+        <div id="bookmarkListWrap"></div>
+      </div>
+    </section>
+
+    <!-- HISTORY VIEW -->
+    <section id="view-history" class="hidden">
+      <div class="card">
+        <div class="card-title">
+          <span>📊 解答履歴</span>
+          <div class="filter-bar" style="margin:0;">
+            <button class="chip active" data-hfilter="ALL" onclick="setHistoryFilter('ALL')">すべて</button>
+            <button class="chip" data-hfilter="TODAY" onclick="setHistoryFilter('TODAY')">今日のみ</button>
+            <button class="chip" data-hfilter="WRONG" onclick="setHistoryFilter('WRONG')">不正解のみ</button>
+          </div>
+        </div>
+        <div id="historyListWrap"></div>
+      </div>
+    </section>
+  </main>
+
+  <!-- SETTINGS & BACKUP MODAL -->
+  <div class="modal-backdrop" id="settingsModal">
+    <div class="modal">
+      <div class="card-title">
+        <span>⚙️ 設定・データバックアップ</span>
+        <button class="btn btn-sm" onclick="closeSettings()">✕</button>
+      </div>
+
+      <div class="form-group">
+        <label for="inputDailyGoal">1日の目標演習数（問）</label>
+        <input type="number" id="inputDailyGoal" min="1" max="100" value="10" />
+      </div>
+
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <button class="btn btn-primary" onclick="saveSettings()">設定を保存</button>
+      </div>
+
+      <hr class="section-divider" />
+
+      <div class="form-group">
+        <label>学習データのバックアップ（端末移行・保存用）</label>
+        <div class="hint" style="margin-bottom:10px;">
+          学習履歴はこの端末のブラウザにのみ保存されます（他の利用者とは共有されません）。JSON形式でバックアップ・復元できます。
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <button class="btn" onclick="exportBackup()">⬇ バックアップを保存 (.json)</button>
+          <button class="btn" onclick="document.getElementById('importFile').click()">⬆ バックアップから復元</button>
+          <input type="file" id="importFile" accept=".json,application/json" class="hidden" onchange="importBackup(event)" />
+        </div>
+      </div>
+
+      <hr class="section-divider" />
+
+      <details>
+        <summary style="cursor:pointer;font-size:0.84rem;font-weight:700;color:var(--muted);">
+          上級者向け：自分専用のGoogleスプレッドシートと連携する（任意）
+        </summary>
+        <div class="form-group" style="margin-top:12px;">
+          <label for="inputGasUrl">自分のGAS ウェブアプリURL（/exec）</label>
+          <input type="url" id="inputGasUrl" placeholder="https://script.google.com/macros/s/xxxxx/exec" />
+          <div class="hint">空欄のままならブラウザ保存のみで動作します。連携用GASを別途デプロイした場合のみ入力してください。</div>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <button class="btn btn-sm btn-primary" onclick="saveSettings()">URLを保存して接続確認</button>
+          <button class="btn btn-sm" onclick="pullFromSheet()">シートから同期</button>
+          <button class="btn btn-sm" onclick="pushUnsyncedToSheet()">未同期データを送信</button>
+        </div>
+      </details>
+
+      <hr class="section-divider" />
+
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;">
+        <span class="hint" id="pendingCountText">未同期キュー: 0件</span>
+        <button class="btn btn-sm btn-danger" onclick="resetLocalData()">この端末の履歴を初期化</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script>
+    // =========================================================================
+    // 公開用設定：他ユーザーとデータが混ざらないようデフォルトはローカル保存のみ
+    // =========================================================================
+    const DEFAULT_GAS_URL = '';
+    const STORAGE_KEY = 'itpass_daily_public_v1';
+
+    // =========================================================================
+    // ITパスポート 頻出30問マスタ（ストラテジ10 / マネジメント10 / テクノロジ10）
+    // =========================================================================
+    const QUESTIONS = [
+      // --- ストラテジ系 ---
+      {
+        id: 'STR-01', field: 'ストラテジ系', category: '企業活動', summary: '損益分岐点売上高の計算',
+        q: '固定費が400万円、変動費率が60%である企業の損益分岐点売上高は何万円か。',
+        choices: ['667万円', '800万円', '1,000万円', '1,200万円'],
+        answer: 2,
+        exp: '損益分岐点売上高 ＝ 固定費 ÷ (1 － 変動費率) です。400 ÷ (1 － 0.6) ＝ 400 ÷ 0.4 ＝ 1,000万円となります。'
+      },
+      {
+        id: 'STR-02', field: 'ストラテジ系', category: '経営戦略', summary: 'SWOT分析の外部環境要素',
+        q: '経営戦略の立案に用いられるSWOT分析において、企業の「外部環境」に分類される組合せはどれか。',
+        choices: ['強み（Strength）と弱み（Weakness）', '機会（Opportunity）と脅威（Threat）', '強み（Strength）と機会（Opportunity）', '弱み（Weakness）と脅威（Threat）'],
+        answer: 1,
+        exp: 'SWOT分析では、自社でコントロールしやすい「強み・弱み」を内部環境、市場動向や競合などの「機会・脅威」を外部環境として整理します。'
+      },
+      {
+        id: 'STR-03', field: 'ストラテジ系', category: '経営戦略', summary: 'PPMの「金のなる木」',
+        q: 'PPM（プロダクトポートフォリオマネジメント）において、市場成長率は低いが相対市場占有率が高く、安定した資金源となる事業区分はどれか。',
+        choices: ['花形', '問題児', '金のなる木', '負け犬'],
+        answer: 2,
+        exp: '「金のなる木」は市場成長率が低いため追加投資を抑えつつ、高いシェアによって大きなキャッシュを生み出す事業です。'
+      },
+      {
+        id: 'STR-04', field: 'ストラテジ系', category: '経営戦略', summary: '3C分析の構成要素',
+        q: 'マーケティング環境を分析するフレームワークである「3C分析」の3つのCに含まれる組合せはどれか。',
+        choices: ['顧客・競合・自社', '製品・価格・流通', '品質・コスト・納期', '計画・実行・評価'],
+        answer: 0,
+        exp: '3C分析は、Customer（市場・顧客）、Competitor（競合）、Company（自社）の3視点から成功要因を探る手法です。'
+      },
+      {
+        id: 'STR-05', field: 'ストラテジ系', category: '法務', summary: '職務著作の著作権帰属',
+        q: 'A社の社員が業務命令により職務上プログラムを作成し、A社名義で公表する場合、契約に別段の定めがない限り、そのプログラムの著作権は誰に帰属するか。',
+        choices: ['作成した社員個人', 'A社（法人）', '社員とA社の共有', 'プログラムを発注した顧客'],
+        answer: 1,
+        exp: '法人の発意に基づき従業員が職務上作成するプログラム著作物（職務著作）は、特段の定めがない限り法人に帰属します（プログラムの場合は公表名義の要件も不要）。'
+      },
+      {
+        id: 'STR-06', field: 'ストラテジ系', category: '法務', summary: 'NDA（秘密保持契約）の目的',
+        q: '企業間で共同開発や業務委託を検討する際に締結される「NDA」の主な目的として、最も適切なものはどれか。',
+        choices: ['システム障害時の復旧時間を保証すること', '取引過程で知り得た機密情報の第三者への漏えいを防ぐこと', 'ソフトウェアの使用許諾範囲を定めること', '成果物の検収後に瑕疵があった場合の補修責任を定めること'],
+        answer: 1,
+        exp: 'NDA（Non-Disclosure Agreement：秘密保持契約）は、業務上開示される営業秘密や技術情報を目的外利用・第三者開示させないための契約です。'
+      },
+      {
+        id: 'STR-07', field: 'ストラテジ系', category: 'ビジネスインダストリ', summary: 'RPAの定義と活用',
+        q: '定型的なPC上のデスクワーク作業をソフトウェア型のロボットによって自動化する仕組みを表す用語はどれか。',
+        choices: ['ERP', 'CRM', 'RPA', 'SCM'],
+        answer: 2,
+        exp: 'RPA（Robotic Process Automation）は、データ入力や集計、転記といったルール化された業務をソフトウェアロボットで自動化する技術です。'
+      },
+      {
+        id: 'STR-08', field: 'ストラテジ系', category: '企業活動', summary: 'コーポレートガバナンスの目的',
+        q: '「コーポレートガバナンス（企業統治）」の主な目的として、最も適切なものはどれか。',
+        choices: ['社内の情報システムを一元管理してコストを削減すること', '経営陣の業務執行を監視・統制し、透明性と健全性を高めること', '顧客からの問い合わせ対応を効率化して満足度を上げること', '従業員の残業時間を削減して労働環境を改善すること'],
+        answer: 1,
+        exp: 'コーポレートガバナンスは、株主やステークホルダーの利益を守るため、経営の不正防止と意思決定の透明性・健全性を確保する仕組みです。'
+      },
+      {
+        id: 'STR-09', field: 'ストラテジ系', category: 'システム戦略', summary: 'BPRの定義',
+        q: '既存の業務内容や組織構造を根本的に見直し、プロセス全体を再設計することで抜本的な業務改革を行う手法はどれか。',
+        choices: ['BPR', 'BPO', 'BYOD', 'BCP'],
+        answer: 0,
+        exp: 'BPR（Business Process Re-engineering）は、部分的な改善ではなく、業務フローや組織を抜本的に再設計してコスト・品質・スピードを劇的に高める手法です。'
+      },
+      {
+        id: 'STR-10', field: 'ストラテジ系', category: '法務', summary: '不正競争防止法の営業秘密3要件',
+        q: '不正競争防止法において「営業秘密」として法的保護を受けるために満たすべき3要件の組合せはどれか。',
+        choices: ['秘密管理性・有用性・非公知性', '機密性・完全性・可用性', '新規性・進歩性・産業上の利用可能性', '独自性・公開性・継続性'],
+        answer: 0,
+        exp: '営業秘密の3要件は「秘密管理性（秘密として管理されている）」「有用性（事業活動に有用）」「非公知性（公然と知られていない）」です。'
+      },
+
+      // --- マネジメント系 ---
+      {
+        id: 'MGT-01', field: 'マネジメント系', category: 'プロジェクトマネジメント', summary: 'WBSの役割',
+        q: 'プロジェクトマネジメントで用いられる「WBS（Work Breakdown Structure）」の説明として、最も適切なものはどれか。',
+        choices: ['作業の順序関係と所要日数を矢線で表した図', 'プロジェクトの成果物と作業を階層的に細分化した構成図', 'チームメンバーごとの責任と権限を一覧化した表', 'プロジェクトの予算消化率と進捗率を比較する手法'],
+        answer: 1,
+        exp: 'WBSはプロジェクトで行うべき作業をトップダウンで管理可能な単位まで階層的に分解し、抜け漏れを防ぐための基礎資料です。'
+      },
+      {
+        id: 'MGT-02', field: 'マネジメント系', category: 'プロジェクトマネジメント', summary: 'クリティカルパスの特徴',
+        q: 'アローダイアグラムにおいて「クリティカルパス」と呼ばれる経路の特徴はどれか。',
+        choices: ['所要日数が最も短い経路であり、コストが最小になる', '余裕時間（フロート）がゼロであり、遅れると全体日程が遅れる', '並行作業が最も多く、人員を削減しやすい経路である', 'リスクが最も低く、監視を省略できる経路である'],
+        answer: 1,
+        exp: 'クリティカルパスは開始から終了までの所要時間が最長となる経路で、余裕時間が0のため、ここにある作業が1日遅れるとプロジェクト全体が1日遅れます。'
+      },
+      {
+        id: 'MGT-03', field: 'マネジメント系', category: '開発技術', summary: 'アジャイル開発の特徴',
+        q: 'アジャイル開発の特徴として、最も適切なものはどれか。',
+        choices: ['最初にすべての要件を厳密に確定し、後工程での変更を原則禁止する', '短い反復（イテレーション）で計画・開発・テストを繰り返し、仕様変更に柔軟に対応する', '設計書などのドキュメント作成を最優先し、実装は最後に一括して行う', '大規模で仕様が完全に固定された基幹システムのみに適用できる'],
+        answer: 1,
+        exp: 'アジャイル開発は、小さな機能単位で短いサイクルの開発とリリースを繰り返し、顧客からのフィードバックを取り入れながら柔軟に進める手法です。'
+      },
+      {
+        id: 'MGT-04', field: 'マネジメント系', category: '開発技術', summary: 'ブラックボックステスト',
+        q: 'プログラムの内部構造や処理ロジックを意識せず、外部仕様に基づいて入力データと出力結果の正しさを検証するテスト手法はどれか。',
+        choices: ['ホワイトボックステスト', 'ブラックボックステスト', '回帰テスト', '負荷テスト'],
+        answer: 1,
+        exp: 'ブラックボックステストは内部を「黒い箱」とみなし、仕様通りに期待する出力が得られるかを同値分割や限界値分析などで検証します。'
+      },
+      {
+        id: 'MGT-05', field: 'マネジメント系', category: 'サービスマネジメント', summary: 'SLAの定義',
+        q: 'ITサービスの提供者と利用者の間で、稼働率や障害対応時間などの具体的なサービス品質の目標値を合意した文書はどれか。',
+        choices: ['SLA', 'SLM', 'RFP', 'RFI'],
+        answer: 0,
+        exp: 'SLA（Service Level Agreement：サービスレベル合意書）は、提供されるサービスの品質基準を定量的に明文化し合意する文書です。'
+      },
+      {
+        id: 'MGT-06', field: 'マネジメント系', category: 'サービスマネジメント', summary: 'インシデント管理の目的',
+        q: 'ITサービスマネジメントにおける「インシデント管理」の第一の目的はどれか。',
+        choices: ['障害の根本原因を徹底的に調査し、再発防止策を実装すること', '中断・品質低下したサービスを可能な限り迅速に通常状態へ回復すること', 'システム変更に伴うリスクを評価し、承認可否を判断すること', '将来のキャパシティ不足を予測してハードウェアを増強すること'],
+        answer: 1,
+        exp: 'インシデント管理は「迅速なサービス復旧（ビジネス影響の最小化）」が最優先です。根本原因の究明と恒久対策は「問題管理」の役割です。'
+      },
+      {
+        id: 'MGT-07', field: 'マネジメント系', category: 'システム監査', summary: 'システム監査人の独立性',
+        q: 'システム監査を実施する際、システム監査人に求められる立場として最も適切なものはどれか。',
+        choices: ['監査対象システムの開発リーダーが兼任し、内部事情を熟知した立場で行う', '監査対象から独立した客観的な立場であり、外観上も独立性が保たれている', 'システム運用部門の部長の指揮下で、指示された範囲のみを調査する', 'ベンダの営業担当者が無償サービスの一環として実施する'],
+        answer: 1,
+        exp: 'システム監査人は、監査対象の開発・運用業務から独立し、公正かつ客観的な判断ができる立場（独立性）であることが不可欠です。'
+      },
+      {
+        id: 'MGT-08', field: 'マネジメント系', category: '開発技術', summary: '結合テストの目的',
+        q: 'システム開発における「結合テスト」の主な目的はどれか。',
+        choices: ['個々のプログラム単体の内部ロジックが正しいかを確認する', '複数のモジュールを組み合わせた際の連携やデータの受け渡しを確認する', '実際の業務環境で発注者が要件を満たしているかを最終確認する', '本番稼働後に発生した障害の修正影響がないかを確認する'],
+        answer: 1,
+        exp: '結合テストは、単体テストを終えたモジュール同士を連結し、呼び出し関係やデータの受け渡しが仕様通り機能するかを検証する工程です。'
+      },
+      {
+        id: 'MGT-09', field: 'マネジメント系', category: 'サービスマネジメント', summary: 'BCPにおけるRTO',
+        q: 'BCP（事業継続計画）で設定される指標のうち、災害や障害でシステムが停止してから「どれくらいの時間以内に復旧させるか」の目標値を表す用語はどれか。',
+        choices: ['RPO（目標復旧時点）', 'RTO（目標復旧時間）', 'MTBF（平均故障間隔）', 'MTTR（平均修復時間）'],
+        answer: 1,
+        exp: 'RTO（Recovery Time Objective：目標復旧時間）は業務再開までの許容停止時間です。一方、RPOは「いつの時点のデータまで戻すか」を示します。'
+      },
+      {
+        id: 'MGT-10', field: 'マネジメント系', category: 'プロジェクトマネジメント', summary: 'スコープクリープの防止',
+        q: 'プロジェクトの進行中に、正式な変更管理手続きを経ないまま細かな機能追加や要件変更が積み重なり、作業範囲が際限なく膨らむ現象を何というか。',
+        choices: ['スコープクリープ', 'クリティカルチェーン', 'クラッシング', 'ファストトラッキング'],
+        answer: 0,
+        exp: 'スコープクリープは納期遅延や予算超過の大きな原因になります。変更要求は必ず影響評価と承認プロセス（変更管理）を通す必要があります。'
+      },
+
+      // --- テクノロジ系 ---
+      {
+        id: 'TEC-01', field: 'テクノロジ系', category: '情報セキュリティ', summary: '公開鍵暗号方式の鍵の使い方',
+        q: '公開鍵暗号方式を用いて、AさんがBさんへ機密メールを暗号化して送信するとき、暗号化と復号に使う鍵の組合せとして正しいものはどれか。',
+        choices: ['暗号化：Aさんの公開鍵 ／ 復号：Aさんの秘密鍵', '暗号化：Bさんの公開鍵 ／ 復号：Bさんの秘密鍵', '暗号化：Aさんの秘密鍵 ／ 復号：Aさんの公開鍵', '暗号化：Bさんの秘密鍵 ／ 復号：Bさんの公開鍵'],
+        answer: 1,
+        exp: '機密保持のための暗号化では、送信者（Aさん）が受信者（Bさん）の公開鍵で暗号化し、受信者（Bさん）だけが持つ秘密鍵で復号します。'
+      },
+      {
+        id: 'TEC-02', field: 'テクノロジ系', category: '情報セキュリティ', summary: 'ランサムウェアの手口',
+        q: 'PCやサーバ内のファイルを勝手に暗号化して使用不能にし、復号と引き換えに金銭（身代金）を要求するマルウェアはどれか。',
+        choices: ['スパイウェア', 'ランサムウェア', 'キーロガー', 'アドウェア'],
+        answer: 1,
+        exp: 'ランサムウェア（Ransom＝身代金）は、ファイル暗号化やデータ公開の脅迫により金銭を要求します。オフラインバックアップやパッチ適用が有効な対策です。'
+      },
+      {
+        id: 'TEC-03', field: 'テクノロジ系', category: '情報セキュリティ', summary: 'ゼロトラストの考え方',
+        q: '情報セキュリティモデルである「ゼロトラスト」の基本的な考え方として、最も適切なものはどれか。',
+        choices: ['社内ネットワーク内の通信は安全とみなし、外部との境界のみを厳重に防御する', '社内外を問わずすべてのネットワークや端末を信頼せず、アクセスごとに認証・検証を行う', 'パスワードを廃止し、すべてのシステムをオープンアクセスにする', 'ウイルス対策ソフトを導入すればファイアウォールは不要とみなす'],
+        answer: 1,
+        exp: 'ゼロトラストは「何も信頼しない（Never Trust, Always Verify）」を前提に、クラウドやリモートワーク環境で都度アクセス権限と端末の安全性を検証します。'
+      },
+      {
+        id: 'TEC-04', field: 'テクノロジ系', category: 'ネットワーク', summary: 'DNSの役割',
+        q: 'インターネットにおいて、人間が読みやすいドメイン名（例：example.jp）と通信に必要なIPアドレスを相互に変換する仕組みはどれか。',
+        choices: ['DHCP', 'DNS', 'SMTP', 'ARP'],
+        answer: 1,
+        exp: 'DNS（Domain Name System）はドメイン名とIPアドレスの対応付け（名前解決）を行います。DHCPはIPアドレスの自動割り当てを行うプロトコルです。'
+      },
+      {
+        id: 'TEC-05', field: 'テクノロジ系', category: 'データベース', summary: '関係データベースの主キー制約',
+        q: '関係データベースのテーブルに設定する「主キー（Primary Key）」が満たすべき条件として、正しいものはどれか。',
+        choices: ['値の重複は許されないが、NULL（空値）は許される', '値の重複もNULL（空値）も許されない', '値の重複は許されるが、NULL（空値）は許されない', '数値型のみ指定でき、文字列型は指定できない'],
+        answer: 1,
+        exp: '主キーはテーブル内の各行（レコード）を一意に特定するための列（または列の組合せ）であり、一意性（重複不可）と非NULL制約の両方を満たす必要があります。'
+      },
+      {
+        id: 'TEC-06', field: 'テクノロジ系', category: 'データベース', summary: 'ACID特性の原子性',
+        q: 'データベースのトランザクション処理が備えるべきACID特性のうち、「一連の処理がすべて完了するか、あるいは全く実行されなかった状態に戻るか（All or Nothing）」を保証する性質はどれか。',
+        choices: ['原子性（Atomicity）', '一貫性（Consistency）', '独立性（Isolation）', '耐久性（Durability）'],
+        answer: 0,
+        exp: '原子性（Atomicity）は、銀行振込の「出金と入金」のように途中で障害が起きた場合、中途半端な状態を残さずロールバックして元に戻す性質です。'
+      },
+      {
+        id: 'TEC-07', field: 'テクノロジ系', category: 'コンピュータシステム', summary: 'キャッシュメモリの役割',
+        q: 'CPUと主記憶装置（メインメモリ）の間に配置され、両者の処理速度の差を埋めることでコンピュータ全体の処理性能を向上させる高速なメモリはどれか。',
+        choices: ['仮想メモリ', 'キャッシュメモリ', 'フラッシュメモリ', 'ROM'],
+        answer: 1,
+        exp: 'キャッシュメモリは主記憶より高速なSRAMなどで構成され、CPUが頻繁に使う命令やデータを一時保持してアクセス待ち時間を大幅に減らします。'
+      },
+      {
+        id: 'TEC-08', field: 'テクノロジ系', category: '基礎理論', summary: '2進数から10進数への基数変換',
+        q: '2進数「10110」を10進数に変換した値はどれか。',
+        choices: ['18', '20', '22', '26'],
+        answer: 2,
+        exp: '右から重み 1, 2, 4, 8, 16 を掛けて足します。(1×16) + (0×8) + (1×4) + (1×2) + (0×1) ＝ 16 + 4 + 2 ＝ 22 です。'
+      },
+      {
+        id: 'TEC-09', field: 'テクノロジ系', category: 'AI・データサイエンス', summary: '生成AIのハルシネーション',
+        q: '生成AI（大規模言語モデルなど）が、事実に基づかない誤った情報をもっともらしく出力してしまう現象を指す用語はどれか。',
+        choices: ['ディープラーニング', 'ハルシネーション', 'シンギュラリティ', 'チューリングテスト'],
+        answer: 1,
+        exp: 'ハルシネーション（Hallucination：幻覚）は、確率的に次の単語を予測する生成AIの特性上、存在しない引用や誤った事実を自然な文章で生成してしまう現象です。'
+      },
+      {
+        id: 'TEC-10', field: 'テクノロジ系', category: 'ネットワーク', summary: 'HTTPSの暗号化プロトコル',
+        q: 'WebブラウザとWebサーバ間の通信（HTTPS）において、盗聴や改ざんを防ぎ、通信相手を認証するために使用される暗号化プロトコルはどれか。',
+        choices: ['TLS（SSL）', 'FTP', 'POP3', 'ICMP'],
+        answer: 0,
+        exp: 'HTTPSはHTTP通信をTLS（旧称SSL）によって暗号化・保護する仕組みです。サーバ証明書による実在証明と通信内容の暗号化を行います。'
+      }
+    ];
+
+    const CHOICE_LABELS = ['ア', 'イ', 'ウ', 'エ'];
+    const FIELDS = ['ストラテジ系', 'マネジメント系', 'テクノロジ系'];
+
+    // =========================================================================
+    // アプリ状態管理（各ユーザーのブラウザに独立保存）
+    // =========================================================================
+    let storageAvailable = checkStorageAvailable();
+    let appState = loadLocalState();
+    let historyFilter = 'ALL';
+
+    let session = {
+      queue: [],
+      index: 0,
+      answered: false,
+      startedAt: 0,
+      timerId: null,
+      results: []
+    };
+
+    function checkStorageAvailable() {
+      try {
+        const testKey = '__itpass_test__';
+        localStorage.setItem(testKey, '1');
+        localStorage.removeItem(testKey);
+        return true;
+      } catch (e) {
+        return false;
+      }
+    }
+
+    function createDefaultState() {
+      return {
+        gasUrl: DEFAULT_GAS_URL || '',
+        dailyGoal: 10,
+        history: [],
+        statuses: {},
+        pendingRecords: [],
+        pendingBookmarks: []
+      };
+    }
+
+    function loadLocalState() {
+      const defaults = createDefaultState();
+      if (!storageAvailable) return defaults;
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return defaults;
+        const parsed = JSON.parse(raw);
+        return {
+          ...defaults,
+          ...parsed,
+          gasUrl: parsed.gasUrl || DEFAULT_GAS_URL || ''
+        };
+      } catch (e) {
+        return defaults;
+      }
+    }
+
+    function saveLocalState() {
+      if (!storageAvailable) return;
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+      } catch (e) {
+        console.warn('localStorage save failed', e);
+      }
+    }
+
+    // =========================================================================
+    // 日付・ユーティリティ
+    // =========================================================================
+    function pad2(n) { return String(n).padStart(2, '0'); }
+    function getTodayStr(d = new Date()) {
+      return `${d.getFullYear()}-${pad2(d.getMonth() + 1)}-${pad2(d.getDate())}`;
+    }
+    function getNowStr(d = new Date()) {
+      return `${getTodayStr(d)} ${pad2(d.getHours())}:${pad2(d.getMinutes())}:${pad2(d.getSeconds())}`;
+    }
+    function escapeHtml(str) {
+      return String(str || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+    function fieldClass(field) {
+      if (field === 'ストラテジ系') return 'str';
+      if (field === 'マネジメント系') return 'mgt';
+      return 'tec';
+    }
+    function fieldColor(field) {
+      if (field === 'ストラテジ系') return 'var(--str)';
+      if (field === 'マネジメント系') return 'var(--mgt)';
+      return 'var(--tec)';
+    }
+    function showToast(msg) {
+      const el = document.getElementById('toast');
+      el.textContent = msg;
+      el.classList.add('show');
+      clearTimeout(el._tid);
+      el._tid = setTimeout(() => el.classList.remove('show'), 2600);
+    }
+
+    // =========================================================================
+    // 任意のスプレッドシート連携（各ユーザーが自前URLを入力した場合のみ動作）
+    // =========================================================================
+    function hasRemote() {
+      return Boolean(appState.gasUrl && appState.gasUrl.startsWith('http'));
+    }
+
+    function setSyncPill(mode, text) {
+      const pill = document.getElementById('syncPill');
+      const label = document.getElementById('syncText');
+      pill.className = 'sync-pill' + (mode ? ' ' + mode : '');
+      label.textContent = text;
+    }
+
+    async function callGas(action, payload = {}) {
+      if (!hasRemote()) throw new Error('GAS URL未設定');
+      if (action === 'ping' || action === 'getState') {
+        const sep = appState.gasUrl.includes('?') ? '&' : '?';
+        const res = await fetch(`${appState.gasUrl}${sep}action=${encodeURIComponent(action)}`, {
+          method: 'GET',
+          redirect: 'follow'
+        });
+        return await res.json();
+      }
+      const res = await fetch(appState.gasUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify({ action, ...payload }),
+        redirect: 'follow'
+      });
+      return await res.json();
+    }
+
+    async function pullFromSheet(silent = false) {
+      if (!hasRemote()) {
+        setSyncPill('', 'ブラウザ保存');
+        if (!silent) showToast('スプレッドシートURLが未設定です');
+        return;
+      }
+      setSyncPill('syncing', '同期中...');
+      try {
+        const data = await callGas('getState');
+        if (!data || !data.ok) throw new Error(data ? data.error : '取得失敗');
+        appState.history = Array.isArray(data.history) ? data.history : [];
+        appState.statuses = data.statuses || {};
+        saveLocalState();
+        renderAll();
+        setSyncPill('connected', 'シート連携中');
+        if (!silent) showToast('スプレッドシートから最新データを同期しました');
+      } catch (err) {
+        console.error(err);
+        setSyncPill('error', '同期エラー');
+        if (!silent) showToast('同期に失敗しました。URLとアクセス権を確認してください');
+      }
+    }
+
+    async function pushRecordToSheet(rec) {
+      if (!hasRemote()) return;
+      setSyncPill('syncing', '保存中...');
+      try {
+        const res = await callGas('recordAnswer', { record: rec });
+        if (!res || !res.ok) throw new Error(res ? res.error : '保存エラー');
+        setSyncPill('connected', 'シート連携中');
+      } catch (err) {
+        console.error(err);
+        appState.pendingRecords.push(rec);
+        saveLocalState();
+        setSyncPill('error', '未同期あり');
+      }
+    }
+
+    async function pushBookmarkToSheet(item) {
+      if (!hasRemote()) return;
+      setSyncPill('syncing', '保存中...');
+      try {
+        const res = await callGas('toggleBookmark', { item });
+        if (!res || !res.ok) throw new Error(res ? res.error : '保存エラー');
+        setSyncPill('connected', 'シート連携中');
+      } catch (err) {
+        console.error(err);
+        appState.pendingBookmarks.push(item);
+        saveLocalState();
+        setSyncPill('error', '未同期あり');
+      }
+    }
+
+    async function pushUnsyncedToSheet() {
+      if (!hasRemote()) {
+        showToast('先に自分のGASウェブアプリURLを保存してください');
+        return;
+      }
+      const records = [...appState.pendingRecords];
+      const bookmarks = [...appState.pendingBookmarks];
+      if (records.length === 0 && bookmarks.length === 0) {
+        if (appState.history.length > 0 && confirm('未同期キューは0件です。現在の履歴すべてをシートへ送信しますか？')) {
+          records.push(...appState.history);
+          Object.values(appState.statuses).forEach(st => {
+            if (st.isBookmarked) bookmarks.push(st);
+          });
+        } else {
+          showToast('送信する未同期データはありません');
+          return;
+        }
+      }
+      setSyncPill('syncing', '一括送信中...');
+      try {
+        const res = await callGas('syncBatch', { records, bookmarks });
+        if (!res || !res.ok) throw new Error(res ? res.error : '送信失敗');
+        appState.pendingRecords = [];
+        appState.pendingBookmarks = [];
+        appState.history = res.history || appState.history;
+        appState.statuses = res.statuses || appState.statuses;
+        saveLocalState();
+        renderAll();
+        updatePendingText();
+        setSyncPill('connected', 'シート連携中');
+        showToast(`スプレッドシートへ ${res.addedCount || records.length} 件反映しました`);
+      } catch (err) {
+        console.error(err);
+        setSyncPill('error', '送信エラー');
+        showToast('送信に失敗しました');
+      }
+    }
+
+    // =========================================================================
+    // JSONバックアップ（書き出し・復元）
+    // =========================================================================
+    function exportBackup() {
+      const payload = {
+        app: 'itpass_daily_public_v1',
+        exportedAt: getNowStr(),
+        dailyGoal: appState.dailyGoal,
+        history: appState.history,
+        statuses: appState.statuses
+      };
+      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `itpass-backup-${getTodayStr()}.json`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+      showToast('バックアップファイルを保存しました');
+    }
+
+    function importBackup(event) {
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        try {
+          const data = JSON.parse(String(reader.result || '{}'));
+          if (!Array.isArray(data.history) || typeof data.statuses !== 'object') {
+            throw new Error('フォーマット不正');
+          }
+          if (!confirm(`バックアップ（履歴 ${data.history.length} 件）を復元しますか？現在の端末データは上書きされます。`)) {
+            return;
+          }
+          appState.history = data.history;
+          appState.statuses = data.statuses || {};
+          if (data.dailyGoal) appState.dailyGoal = Number(data.dailyGoal) || 10;
+          saveLocalState();
+          renderAll();
+          document.getElementById('inputDailyGoal').value = appState.dailyGoal;
+          showToast('学習データを復元しました');
+        } catch (err) {
+          showToast('読み込みに失敗しました。正しいバックアップファイルを選択してください');
+        } finally {
+          event.target.value = '';
+        }
+      };
+      reader.readAsText(file, 'utf-8');
+    }
+
+    // =========================================================================
+    // 画面遷移・レンダリング
+    // =========================================================================
+    function switchView(viewName) {
+      if (viewName !== 'quiz') stopTimer();
+      document.querySelectorAll('main > section').forEach(sec => sec.classList.add('hidden'));
+      document.getElementById(`view-${viewName}`).classList.remove('hidden');
+      document.querySelectorAll('nav.tabs button').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.view === viewName);
+      });
+      if (viewName === 'quiz' && session.queue.length === 0) {
+        startQuiz('daily');
+      } else {
+        renderAll();
+      }
+    }
+
+    document.querySelectorAll('nav.tabs button').forEach(btn => {
+      btn.addEventListener('click', () => switchView(btn.dataset.view));
+    });
+
+    function getStatus(qId) {
+      return appState.statuses[qId] || {
+        questionId: qId, attempts: 0, correctCount: 0, accuracy: 0,
+        isWeak: false, isBookmarked: false, lastAnsweredAt: ''
+      };
+    }
+
+    function renderAll() {
+      const today = getTodayStr();
+      const todayHist = appState.history.filter(h => h.date === today);
+      const todayCorrect = todayHist.filter(h => h.isCorrect).length;
+      const todayRate = todayHist.length ? Math.round((todayCorrect / todayHist.length) * 100) : 0;
+
+      const totalCount = appState.history.length;
+      const totalCorrect = appState.history.filter(h => h.isCorrect).length;
+      const totalRate = totalCount ? Math.round((totalCorrect / totalCount) * 100) : 0;
+
+      const weakQuestions = QUESTIONS.filter(q => getStatus(q.id).isWeak);
+      const bmQuestions = QUESTIONS.filter(q => getStatus(q.id).isBookmarked);
+
+      document.getElementById('kpiTodayCount').textContent = todayHist.length;
+      document.getElementById('kpiGoal').textContent = appState.dailyGoal;
+      document.getElementById('todayProgressFill').style.width = `${Math.min(100, Math.round((todayHist.length / appState.dailyGoal) * 100))}%`;
+      document.getElementById('kpiTodayRate').textContent = `今日の正答率: ${todayRate}% (${todayCorrect}/${todayHist.length})`;
+      document.getElementById('kpiTotalCount').textContent = totalCount;
+      document.getElementById('kpiTotalRate').textContent = `累計正答率: ${totalRate}% (${totalCorrect}/${totalCount})`;
+      document.getElementById('kpiWeakCount').textContent = weakQuestions.length;
+      document.getElementById('kpiBmCount').textContent = bmQuestions.length;
+      document.getElementById('tabWeakCount').textContent = weakQuestions.length;
+      document.getElementById('tabBmCount').textContent = bmQuestions.length;
+
+      const barsHtml = FIELDS.map(field => {
+        const list = appState.history.filter(h => h.field === field);
+        const ok = list.filter(h => h.isCorrect).length;
+        const rate = list.length ? Math.round((ok / list.length) * 100) : 0;
+        return `
+          <div>
+            <div class="field-row-head">
+              <span>${field}</span>
+              <span>${rate}% <span style="color:var(--muted);font-weight:600;">(${ok} / ${list.length}問)</span></span>
+            </div>
+            <div class="progress-track">
+              <div class="progress-fill" style="width:${rate}%;background:${fieldColor(field)};"></div>
+            </div>
+          </div>
+        `;
+      }).join('');
+      document.getElementById('fieldBars').innerHTML = barsHtml;
+
+      renderQuestionList('weakListWrap', weakQuestions, '現在、苦手問題はありません。演習を続けると自動抽出されます。');
+      renderQuestionList('bookmarkListWrap', bmQuestions, 'ブックマークされた問題はありません。演習中に「☆ ブックマーク」で追加できます。');
+      renderHistory();
+    }
+
+    function renderQuestionList(containerId, list, emptyMsg) {
+      const wrap = document.getElementById(containerId);
+      if (list.length === 0) {
+        wrap.innerHTML = `<div class="empty-state">${emptyMsg}</div>`;
+        return;
+      }
+      const rows = list.map(q => {
+        const st = getStatus(q.id);
+        const rate = st.attempts ? `${Math.round(st.accuracy * 100)}%` : '-';
+        return `
+          <tr>
+            <td><strong>${q.id}</strong></td>
+            <td><span class="badge ${fieldClass(q.field)}">${q.field}</span></td>
+            <td>${escapeHtml(q.summary)}<div class="hint">${escapeHtml(q.category)}</div></td>
+            <td>${st.correctCount} / ${st.attempts} (${rate})</td>
+            <td style="white-space:nowrap;">
+              <button class="btn btn-sm btn-primary" onclick="startSingleQuestion('${q.id}')">解く</button>
+              <button class="btn btn-sm" onclick="toggleBookmarkById('${q.id}')">${st.isBookmarked ? '★解除' : '☆登録'}</button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+      wrap.innerHTML = `
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>ID</th><th>分野</th><th>問題テーマ</th><th>正答実績</th><th>操作</th></tr></thead>
+            <tbody>${rows}</tbody>
+          </table>
+        </div>
+      `;
+    }
+
+    function setHistoryFilter(filter) {
+      historyFilter = filter;
+      document.querySelectorAll('[data-hfilter]').forEach(el => {
+        el.classList.toggle('active', el.dataset.hfilter === filter);
+      });
+      renderHistory();
+    }
+
+    function renderHistory() {
+      const wrap = document.getElementById('historyListWrap');
+      const today = getTodayStr();
+      let list = [...appState.history].reverse();
+      if (historyFilter === 'TODAY') list = list.filter(h => h.date === today);
+      if (historyFilter === 'WRONG') list = list.filter(h => !h.isCorrect);
+
+      if (list.length === 0) {
+        wrap.innerHTML = '<div class="empty-state">該当する解答履歴はまだありません。</div>';
+        return;
+      }
+      const rows = list.slice(0, 100).map(h => `
+        <tr>
+          <td style="white-space:nowrap;">${escapeHtml(h.timestamp)}</td>
+          <td><strong>${escapeHtml(h.questionId)}</strong></td>
+          <td><span class="badge ${fieldClass(h.field)}">${escapeHtml(h.field)}</span></td>
+          <td>${escapeHtml(h.summary)}</td>
+          <td>${escapeHtml(h.selected)} / 正解:${escapeHtml(h.correct)}</td>
+          <td style="font-weight:800;color:${h.isCorrect ? 'var(--success)' : 'var(--danger)'};">${h.isCorrect ? '◯ 正解' : '✕ 不正解'}</td>
+          <td>${h.elapsedSec}秒</td>
+        </tr>
+      `).join('');
+      wrap.innerHTML = `
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>日時</th><th>ID</th><th>分野</th><th>問題テーマ</th><th>解答</th><th>結果</th><th>時間</th></tr></thead>
+            <tbody>${rows}</tbody>
+          </table>
+        </div>
+      `;
+    }
+
+    // =========================================================================
+    // 演習ロジック
+    // =========================================================================
+    function shuffle(arr) {
+      const copy = [...arr];
+      for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    }
+
+    function startQuiz(mode) {
+      let pool = [];
+      if (mode === 'daily') {
+        const weak = shuffle(QUESTIONS.filter(q => getStatus(q.id).isWeak));
+        const unseen = shuffle(QUESTIONS.filter(q => getStatus(q.id).attempts === 0 && !getStatus(q.id).isWeak));
+        const rest = shuffle(QUESTIONS.filter(q => getStatus(q.id).attempts > 0 && !getStatus(q.id).isWeak));
+        pool = [...weak, ...unseen, ...rest].slice(0, Math.min(appState.dailyGoal, QUESTIONS.length));
+      } else if (mode === 'weak') {
+        pool = shuffle(QUESTIONS.filter(q => getStatus(q.id).isWeak));
+        if (pool.length === 0) {
+          showToast('現在、苦手問題はありません！');
+          return;
+        }
+      } else if (mode === 'bookmarks') {
+        pool = shuffle(QUESTIONS.filter(q => getStatus(q.id).isBookmarked));
+        if (pool.length === 0) {
+          showToast('ブックマークされた問題がありません');
+          return;
+        }
+      } else if (FIELDS.includes(mode)) {
+        pool = shuffle(QUESTIONS.filter(q => q.field === mode));
+      } else {
+        pool = shuffle(QUESTIONS).slice(0, 10);
+      }
+
+      session = { queue: pool, index: 0, answered: false, startedAt: Date.now(), timerId: null, results: [] };
+      document.getElementById('quizActiveCard').classList.remove('hidden');
+      document.getElementById('quizResultCard').classList.add('hidden');
+      switchView('quiz');
+      renderCurrentQuestion();
+    }
+
+    function startSingleQuestion(qId) {
+      const target = QUESTIONS.find(q => q.id === qId);
+      if (!target) return;
+      session = { queue: [target], index: 0, answered: false, startedAt: Date.now(), timerId: null, results: [] };
+      document.getElementById('quizActiveCard').classList.remove('hidden');
+      document.getElementById('quizResultCard').classList.add('hidden');
+      switchView('quiz');
+      renderCurrentQuestion();
+    }
+
+    function stopTimer() {
+      if (session.timerId) {
+        clearInterval(session.timerId);
+        session.timerId = null;
+      }
+    }
+
+    function renderCurrentQuestion() {
+      const q = session.queue[session.index];
+      if (!q) return;
+      session.answered = false;
+      session.startedAt = Date.now();
+      stopTimer();
+
+      const st = getStatus(q.id);
+      document.getElementById('qProgress').textContent = `${session.index + 1} / ${session.queue.length}`;
+      document.getElementById('quizProgressFill').style.width = `${Math.round((session.index / session.queue.length) * 100)}%`;
+      document.getElementById('qIdBadge').textContent = q.id;
+
+      const fBadge = document.getElementById('qFieldBadge');
+      fBadge.textContent = q.field;
+      fBadge.className = `badge ${fieldClass(q.field)}`;
+      document.getElementById('qCatBadge').textContent = q.category;
+      document.getElementById('qWeakBadge').classList.toggle('hidden', !st.isWeak);
+      updateBookmarkButton(st.isBookmarked);
+
+      document.getElementById('qText').textContent = q.q;
+      document.getElementById('qFeedback').classList.add('hidden');
+      document.getElementById('btnNextQuestion').classList.add('hidden');
+
+      const choicesEl = document.getElementById('qChoices');
+      choicesEl.innerHTML = q.choices.map((text, idx) => `
+        <button class="choice-btn" data-idx="${idx}" onclick="submitAnswer(${idx})">
+          <span class="choice-key">${CHOICE_LABELS[idx]}</span>
+          <span>${escapeHtml(text)}</span>
+        </button>
+      `).join('');
+
+      document.getElementById('qTimer').textContent = '⏱ 0秒';
+      session.timerId = setInterval(() => {
+        const sec = Math.floor((Date.now() - session.startedAt) / 1000);
+        document.getElementById('qTimer').textContent = `⏱ ${sec}秒`;
+      }, 500);
+    }
+
+    function submitAnswer(choiceIdx) {
+      if (session.answered) return;
+      session.answered = true;
+      stopTimer();
+
+      const q = session.queue[session.index];
+      const elapsedSec = Math.max(1, Math.round((Date.now() - session.startedAt) / 1000));
+      const isCorrect = choiceIdx === q.answer;
+
+      document.querySelectorAll('#qChoices .choice-btn').forEach((btn, idx) => {
+        btn.disabled = true;
+        if (idx === q.answer) btn.classList.add('correct');
+        else if (idx === choiceIdx && !isCorrect) btn.classList.add('wrong');
+      });
+
+      const fb = document.getElementById('qFeedback');
+      fb.className = `feedback-box ${isCorrect ? 'ok' : 'ng'}`;
+      document.getElementById('qFeedbackHead').textContent = isCorrect
+        ? `⭕ 正解！（解答時間: ${elapsedSec}秒）`
+        : `❌ 不正解（正解は「${CHOICE_LABELS[q.answer]}」）`;
+      document.getElementById('qFeedbackExp').textContent = q.exp;
+      fb.classList.remove('hidden');
+
+      const nextBtn = document.getElementById('btnNextQuestion');
+      nextBtn.textContent = session.index + 1 < session.queue.length ? '次の問題へ →' : '結果を見る →';
+      nextBtn.classList.remove('hidden');
+
+      const now = new Date();
+      const prevSt = getStatus(q.id);
+      const newAttempts = prevSt.attempts + 1;
+      const newCorrect = prevSt.correctCount + (isCorrect ? 1 : 0);
+      const newAcc = newCorrect / newAttempts;
+      const newIsWeak = (!isCorrect) || (newAcc < 0.6);
+
+      appState.statuses[q.id] = {
+        questionId: q.id,
+        field: q.field,
+        category: q.category,
+        summary: q.summary,
+        attempts: newAttempts,
+        correctCount: newCorrect,
+        accuracy: newAcc,
+        isWeak: newIsWeak,
+        isBookmarked: prevSt.isBookmarked,
+        lastAnsweredAt: getNowStr(now)
+      };
+
+      const record = {
+        timestamp: getNowStr(now),
+        date: getTodayStr(now),
+        questionId: q.id,
+        field: q.field,
+        category: q.category,
+        summary: q.summary,
+        selected: CHOICE_LABELS[choiceIdx],
+        correct: CHOICE_LABELS[q.answer],
+        isCorrect,
+        isBookmarked: prevSt.isBookmarked,
+        elapsedSec
+      };
+
+      appState.history.push(record);
+      session.results.push(record);
+      saveLocalState();
+      renderAll();
+      pushRecordToSheet(record);
+    }
+
+    function nextQuestion() {
+      if (session.index + 1 < session.queue.length) {
+        session.index++;
+        renderCurrentQuestion();
+      } else {
+        showSessionResult();
+      }
+    }
+
+    function showSessionResult() {
+      stopTimer();
+      document.getElementById('quizActiveCard').classList.add('hidden');
+      document.getElementById('quizResultCard').classList.remove('hidden');
+
+      const total = session.results.length;
+      const ok = session.results.filter(r => r.isCorrect).length;
+      const rate = total ? Math.round((ok / total) * 100) : 0;
+      const avgSec = total ? Math.round(session.results.reduce((s, r) => s + r.elapsedSec, 0) / total) : 0;
+
+      document.getElementById('resScore').textContent = `${ok} / ${total}問`;
+      document.getElementById('resRate').textContent = `${rate}%`;
+      document.getElementById('resAvgSec').textContent = `${avgSec}秒`;
+    }
+
+    function updateBookmarkButton(isBookmarked) {
+      const btn = document.getElementById('btnToggleBookmark');
+      btn.classList.toggle('active', isBookmarked);
+      btn.textContent = isBookmarked ? '★ ブックマーク済' : '☆ ブックマーク';
+    }
+
+    function toggleCurrentBookmark() {
+      const q = session.queue[session.index];
+      if (!q) return;
+      toggleBookmarkById(q.id);
+      updateBookmarkButton(getStatus(q.id).isBookmarked);
+    }
+
+    function toggleBookmarkById(qId) {
+      const q = QUESTIONS.find(item => item.id === qId);
+      if (!q) return;
+      const st = getStatus(qId);
+      const nextVal = !st.isBookmarked;
+      appState.statuses[qId] = {
+        ...st,
+        questionId: q.id,
+        field: q.field,
+        category: q.category,
+        summary: q.summary,
+        isBookmarked: nextVal
+      };
+      saveLocalState();
+      renderAll();
+      showToast(nextVal ? 'ブックマークに追加しました' : 'ブックマークを解除しました');
+      pushBookmarkToSheet({
+        questionId: q.id,
+        field: q.field,
+        category: q.category,
+        summary: q.summary,
+        isBookmarked: nextVal
+      });
+    }
+
+    // キーボードショートカット
+    document.addEventListener('keydown', (e) => {
+      const quizVisible = !document.getElementById('view-quiz').classList.contains('hidden');
+      const modalOpen = document.getElementById('settingsModal').classList.contains('open');
+      if (!quizVisible || modalOpen) return;
+      if (!session.answered && ['1', '2', '3', '4'].includes(e.key)) {
+        submitAnswer(Number(e.key) - 1);
+      } else if (session.answered && e.key === 'Enter') {
+        nextQuestion();
+      } else if (e.key.toLowerCase() === 'b') {
+        toggleCurrentBookmark();
+      }
+    });
+
+    // =========================================================================
+    // 設定モーダル
+    // =========================================================================
+    function openSettings() {
+      document.getElementById('inputGasUrl').value = appState.gasUrl || '';
+      document.getElementById('inputDailyGoal').value = appState.dailyGoal || 10;
+      updatePendingText();
+      document.getElementById('settingsModal').classList.add('open');
+    }
+    function closeSettings() {
+      document.getElementById('settingsModal').classList.remove('open');
+    }
+    function updatePendingText() {
+      const count = appState.pendingRecords.length + appState.pendingBookmarks.length;
+      document.getElementById('pendingCountText').textContent = `未同期キュー: ${count}件`;
+    }
+
+    async function saveSettings() {
+      appState.gasUrl = document.getElementById('inputGasUrl').value.trim();
+      const goalVal = Number(document.getElementById('inputDailyGoal').value);
+      appState.dailyGoal = (goalVal >= 1 && goalVal <= 100) ? goalVal : 10;
+      saveLocalState();
+      renderAll();
+
+      if (!hasRemote()) {
+        setSyncPill('', 'ブラウザ保存');
+        showToast('設定を保存しました');
+        closeSettings();
+        return;
+      }
+
+      setSyncPill('syncing', '接続確認中...');
+      try {
+        const res = await callGas('ping');
+        if (!res || !res.ok) throw new Error('接続応答なし');
+        setSyncPill('connected', 'シート連携中');
+        showToast('スプレッドシートに接続しました');
+        await pullFromSheet(true);
+        closeSettings();
+      } catch (err) {
+        console.error(err);
+        setSyncPill('error', '接続失敗');
+        showToast('接続に失敗しました。URLとアクセス権を確認してください');
+      }
+    }
+
+    function resetLocalData() {
+      if (!confirm('この端末に保存されている解答履歴・ブックマークを初期化しますか？')) return;
+      const keepUrl = appState.gasUrl;
+      const keepGoal = appState.dailyGoal;
+      appState = createDefaultState();
+      appState.gasUrl = keepUrl;
+      appState.dailyGoal = keepGoal;
+      saveLocalState();
+      renderAll();
+      updatePendingText();
+      showToast('履歴を初期化しました');
+    }
+
+    document.getElementById('btnOpenSettings').addEventListener('click', openSettings);
+    document.getElementById('settingsModal').addEventListener('click', (e) => {
+      if (e.target.id === 'settingsModal') closeSettings();
+    });
+
+    // =========================================================================
+    // 初期化
+    // =========================================================================
+    if (!storageAvailable) {
+      document.getElementById('storageWarn').classList.remove('hidden');
+    }
+    renderAll();
+    if (hasRemote()) {
+      pullFromSheet(true);
+    } else {
+      setSyncPill('', 'ブラウザ保存');
+    }
+  </script>
+</body>
+</html>
